@@ -12,6 +12,8 @@ public class ExpenseMapper {
         expenseDTO.setDate(expense.getDate());
         expenseDTO.setDescription(expense.getDescription());
         expenseDTO.setAmount(expense.getAmount());
+        expenseDTO.setCategory(expense.getCategory());
+        expenseDTO.setMandatory(expense.isMandatory());
         return expenseDTO;
     }
     public Expense toEntity(ExpenseDTO expenseDTO) {
@@ -20,6 +22,8 @@ public class ExpenseMapper {
         expense.setDate(expenseDTO.getDate());
         expense.setDescription(expenseDTO.getDescription());
         expense.setAmount(expenseDTO.getAmount());
+        expense.setCategory(expenseDTO.getCategory());
+        expense.setMandatory(expenseDTO.isMandatory());
         return expense;
     }
 }

@@ -25,7 +25,7 @@ public class IncomeService {
     @Autowired
     private UserLogic userLogic;
 
-    @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
+   // @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
     public IncomeDTO addIncome(IncomeDTO incomeDTO, String username) {
     User user = (User) userService.loadUserByUsername(username);
     Income income = incomeMapper.toEntity(incomeDTO);

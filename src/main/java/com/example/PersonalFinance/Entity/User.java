@@ -25,8 +25,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String birthDate;
 
-    @Column(nullable = false)
-    private Float salary;
+//    @Column(nullable = false)
+//    private Float salary;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -81,12 +81,12 @@ public class User implements UserDetails {
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
-    public Float getSalary() {
-        return salary;
-    }
-    public void setSalary(Float salary) {
-        this.salary = salary;
-    }
+//    public Float getSalary() {
+//        return salary;
+//    }
+//    public void setSalary(Float salary) {
+//        this.salary = salary;
+//    }
     public String getUsername() {
         return username;
     }

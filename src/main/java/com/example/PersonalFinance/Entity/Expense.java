@@ -1,5 +1,6 @@
 package com.example.PersonalFinance.Entity;
 
+import com.example.PersonalFinance.Dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,6 +21,28 @@ public class Expense {
 
     @Column(nullable = false)
     private LocalDate date;
+
+    @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private boolean mandatory;
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)

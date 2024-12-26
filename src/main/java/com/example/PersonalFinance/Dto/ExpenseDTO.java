@@ -8,6 +8,24 @@ public class ExpenseDTO {
     private String description;
     private double amount;
     private LocalDate date;
+    private String category;
+    private boolean mandatory;
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public UUID getId() {
         return id;
