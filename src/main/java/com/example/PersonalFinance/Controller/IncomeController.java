@@ -17,14 +17,25 @@ public class IncomeController {
 
     @PostMapping
     public ResponseEntity<IncomeDTO> addIncome(@RequestBody IncomeDTO incomeDTO, Principal principal) {
-        String username = principal.getName();
-        IncomeDTO savedIncome = incomeService.addIncome(incomeDTO, username);
-        return ResponseEntity.ok(savedIncome);
+        try{
+            String username = principal.getName();
+            IncomeDTO savedIncome = incomeService.addIncome(incomeDTO, username);
+            return ResponseEntity.ok(savedIncome);
+        }
+        catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
     @GetMapping
     public ResponseEntity<List<IncomeDTO>> getAllIncome(Principal principal) {
-        String username = principal.getName();
-        List<IncomeDTO> incomes = incomeService.getAllIncomes(username);
-        return ResponseEntity.ok(incomes);
+        try{
+            String username = principal.getName();
+            List<IncomeDTO> incomes = incomeService.getAllIncomes(username);
+            return ResponseEntity.ok(incomes);
+        }
+        catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

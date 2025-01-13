@@ -11,13 +11,13 @@ public class UserDTO {
     private String surname;
     private String identityNumber;
     private String birthDate;
-   // private Float salary;
+
     private String username;
     private String password;
     private String email;
     private Set<RoleDTO> roles = new HashSet<>();
 
-    // Getters and Setters
+
     public UUID getId() {
         return id;
     }
@@ -58,13 +58,6 @@ public class UserDTO {
         this.birthDate = birthDate;
     }
 
-//    public Float getSalary() {
-//        return salary;
-//    }
-//
-//    public void setSalary(Float salary) {
-//        this.salary = salary;
-//    }
 
     public String getUsername() {
         return username;

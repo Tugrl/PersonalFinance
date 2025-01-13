@@ -56,9 +56,10 @@ public class SecurityConfig {
         logger.info("Configuring security filter chain...");
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login","/api/income","/api/expense","/api/budget","/api/auth/register","/api/users/**"
-                                ,"api/users/page","api/roles","api/messages/**","api/inbox"
-                                ,"api/messages/reply/**").permitAll()
+                        .requestMatchers("/api/auth/login","/api/income","/api/expense","/api/budget",
+                                "/api/auth/register","/api/users/**"
+                                ,"api/roles/**","api/authorities")
+                               .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,11 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
+            SecurityContextHolder.clearContext();
             Authentication authentication = authenticationManager.authenticate(
+
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
                             loginRequest.getPassword()
@@ -41,17 +44,28 @@ public class AuthController {
             String jwt = jwtUtil.generateToken(userDetails);
             UserDTO userDTO = userService.findByUsername(userDetails.getUsername());
 
-            return new LoginResponse(jwt, userDTO);
+            LoginResponse loginInfo=new LoginResponse(jwt,userDTO);
+            //return new LoginResponse(jwt, userDTO);
+
+
+            return ResponseEntity.ok(loginInfo);
 
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Invalid username or password");
+            //throw new RuntimeException("Invalid username or password");
+            return ResponseEntity.badRequest().body("Invalid username or password");
         }
     }
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+            try {
+                UserDTO registeredUser = userService.saveUser(userDTO);
+                return ResponseEntity.ok(registeredUser);
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
 
-        UserDTO registeredUser = userService.saveUser(userDTO);
-        return ResponseEntity.ok(registeredUser);
+
     }
 
 }

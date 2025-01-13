@@ -192,14 +192,19 @@ public class SuggestionController {
 
     @GetMapping
     public ResponseEntity<?> getSavingSuggestions(Principal principal) {
-        String username = principal.getName();
+      try {
+          String username = principal.getName();
 
-        List<IncomeDTO> incomes = incomeService.getAllIncomes(username);
-        List<ExpenseDTO> expenses = expenseService.getAllExpenses(username);
-        List<FinancialGoalDTO> goals = financialGoalService.getFinancialGoals(username);
+          List<IncomeDTO> incomes = incomeService.getAllIncomes(username);
+          List<ExpenseDTO> expenses = expenseService.getAllExpenses(username);
+          List<FinancialGoalDTO> goals = financialGoalService.getFinancialGoals(username);
 
-        Map<String, Object> suggestions = suggestionService.generateSavingSuggestions(incomes, expenses, goals);
-        return ResponseEntity.ok(suggestions);
+          Map<String, Object> suggestions = suggestionService.generateSavingSuggestions(incomes, expenses, goals);
+          return ResponseEntity.ok(suggestions);
+      }
+      catch (Exception e) {
+          return ResponseEntity.status(500).body(e.getMessage());
+      }
     }
 }
 

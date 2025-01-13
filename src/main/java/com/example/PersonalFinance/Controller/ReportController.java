@@ -276,15 +276,20 @@ public class ReportController {
 
     @GetMapping("/monthly")
     public ResponseEntity<?> generateMonthlyReport(Principal principal) {
-        String username = principal.getName();
+     try {
+         String username = principal.getName();
 
-        List<IncomeDTO> incomes = incomeService.getAllIncomes(username);
-        List<ExpenseDTO> expenses = expenseService.getAllExpenses(username);
-        List<FinancialGoalDTO> goals = financialGoalService.getFinancialGoals(username);
-        BudgetDTO budget = budgetService.getBudget(username);
+         List<IncomeDTO> incomes = incomeService.getAllIncomes(username);
+         List<ExpenseDTO> expenses = expenseService.getAllExpenses(username);
+         List<FinancialGoalDTO> goals = financialGoalService.getFinancialGoals(username);
+         BudgetDTO budget = budgetService.getBudget(username);
 
-        Map<String, Object> report = reportService.generateMonthlyReportData(incomes, expenses, goals, budget);
-        return ResponseEntity.ok(report);
+         Map<String, Object> report = reportService.generateMonthlyReportData(incomes, expenses, goals, budget);
+         return ResponseEntity.ok(report);
+     }
+     catch (Exception e) {
+         return ResponseEntity.status(500).body(e.getMessage());
+     }
     }
 }
 

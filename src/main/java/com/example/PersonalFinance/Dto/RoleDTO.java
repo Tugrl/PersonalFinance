@@ -1,12 +1,13 @@
 package com.example.PersonalFinance.Dto;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 public class RoleDTO {
     private UUID id;
     private String name;
-    private Set<AuthorityDTO> authorities;
+    private Set<AuthorityDTO> authorities = new HashSet<>();
 
     public UUID getId() {
         return id;

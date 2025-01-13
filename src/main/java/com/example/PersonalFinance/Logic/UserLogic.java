@@ -6,8 +6,6 @@ import com.example.PersonalFinance.Repository.UserRepository;
 
 import com.example.PersonalFinance.Security.EncoderConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +37,13 @@ public class UserLogic {
         user.setPassword(encoderConfig.passwordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
+    public User saveAdminUser(User user) {
+        Role userRole = roleRepository.findByName("ROLE_ADMIN")
+                .orElseThrow(() -> new NoSuchElementException("ROLE_USER not found"));
+        user.getRoles().add(userRole);
+        user.setPassword(encoderConfig.passwordEncoder().encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
@@ -46,24 +51,5 @@ public class UserLogic {
     public User loadUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-    public User updateUserWithPatch(UUID id, Map<String, Object> updates) {
-        User currentUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        updates.forEach((key, value) -> {
-            switch (key) {
-                case "name":
-                    currentUser.setName((String) value);
-                    break;
-                case "surname":
-                    currentUser.setSurname((String) value);
-                    break;
-                case "birthDate":
-                    currentUser.setBirthDate((String) value);
-                    break;
-                case "email":
-                    currentUser.setEmail((String) value);
-                    break;
-            }
-        });
-        return userRepository.save(currentUser);
-    }
+
 }

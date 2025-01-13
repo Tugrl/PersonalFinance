@@ -51,13 +51,6 @@ public class JwtUtil {
         User user = (User) userDetails;
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
-      //  claims.put("name", user.getName());
-      //  claims.put("surname", user.getSurname());
-       // claims.put("identityNumber", user.getIdentityNumber());
-        //claims.put("birthDate", user.getBirthDate());
-        //claims.put("salary", user.getSalary());
-        //claims.put("username", user.getUsername());
-        //claims.put("email", user.getEmail());
         claims.put("authorities", user.getAuthorities().stream()
                .map(authority -> authority.getAuthority()).collect(Collectors.toList()));
         return createToken(claims, user.getUsername());
@@ -67,7 +60,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 *60 *60 *10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 *60*15))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }

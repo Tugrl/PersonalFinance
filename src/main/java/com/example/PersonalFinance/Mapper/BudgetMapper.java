@@ -3,7 +3,6 @@ package com.example.PersonalFinance.Mapper;
 import com.example.PersonalFinance.Dto.BudgetDTO;
 import com.example.PersonalFinance.Dto.UserDTO;
 import com.example.PersonalFinance.Entity.Budget;
-//import org.springframework.security.core.userdetails.User;
 import com.example.PersonalFinance.Entity.User;
 import org.springframework.stereotype.Component;
 

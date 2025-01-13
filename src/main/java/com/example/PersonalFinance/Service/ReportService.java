@@ -56,7 +56,9 @@ public class ReportService {
         BigDecimal netBudget = totalIncome.subtract(totalExpense);
         BigDecimal totalSavedAmount = calculateTotalAmount(goals.stream().map(FinancialGoalDTO::getSavedAmount));
         BigDecimal totalMonthlySavingsRequired = calculateTotalMonthlySavingsRequired(goals);
-        BigDecimal remainingBudget = netBudget.subtract(totalMonthlySavingsRequired);
+        BigDecimal remainingBudget=netBudget.subtract(totalMonthlySavingsRequired);
+        BigDecimal threshold = totalIncome.multiply(BigDecimal.valueOf(0.1));
+
 
         List<Map<String, Object>> goalReports = goals.stream().map(goal -> {
             BigDecimal remainingAmount = goal.getTargetAmount().subtract(goal.getSavedAmount());
@@ -73,14 +75,28 @@ public class ReportService {
             return report;
         }).collect(Collectors.toList());
 
-        return Map.of(
-                "month", LocalDate.now().getMonth().toString() + " " + LocalDate.now().getYear(),
-                "totalIncome", totalIncome,
-                "totalExpense", totalExpense,
-                "netBudget", netBudget,
-                "financialGoals", goalReports,
-                "remainingBudget", remainingBudget,
-                "totalMonthlySavingsRequired", totalMonthlySavingsRequired
-        );
+
+        if(remainingBudget.compareTo(threshold) > 0) {
+            return Map.of(
+                    "month", LocalDate.now().getMonth().toString() + " " + LocalDate.now().getYear(),
+                    "totalIncome", totalIncome,
+                    "totalExpense", totalExpense,
+                    "netBudget", netBudget,
+                    "financialGoals", goalReports,
+                    "remainingBudget", remainingBudget,
+                    "totalMonthlySavingsRequired", totalMonthlySavingsRequired
+            );
+        }
+        else {
+            return Map.of(
+                    "month", LocalDate.now().getMonth().toString() + " " + LocalDate.now().getYear(),
+                    "totalIncome", totalIncome,
+                    "totalExpense", totalExpense,
+                    "netBudget", netBudget,
+                    "financialGoals", goalReports,
+                    "totalMonthlySavingsRequired", totalMonthlySavingsRequired,
+                    "message","Birikim hedefiniz gelirinizin %10'unu aştığı için, bu ay birikim yapılmayacaktır."
+            );
+        }
     }
 }

@@ -18,29 +18,27 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    //@GetMapping
-//    public ResponseEntity<BigDecimal> getBudget(Principal principal) {
-//        String username = principal.getName();
-//        BigDecimal budget = budgetService.calculateBudget(username);
-//        return ResponseEntity.ok(budget);
-//    }
-//    @GetMapping
-//    public ResponseEntity<BudgetDTO> getBudget(Principal principal) {
-//        String username = principal.getName();
-//        BudgetDTO budget = budgetService.getBudget(username);
-//        return ResponseEntity.ok(budget);
-//    }
     @PostMapping
     public ResponseEntity<String> createBudget(Principal principal) {
-        String username = principal.getName();
-        BudgetDTO budget = budgetService.calculateBudget(username);
-        return ResponseEntity.ok("Bütçe Başarıyla Oluşturuldu");
+       try{
+           String username = principal.getName();
+           BudgetDTO budget = budgetService.calculateBudget(username);
+           return ResponseEntity.ok("Bütçe Başarıyla Oluşturuldu");
+       }
+       catch (Exception e){
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
     }
     @GetMapping
     public ResponseEntity<?> fetchBudget(Principal principal) {
-        String username = principal.getName();
-        Map<String,Object> budgets = budgetService.fetchBudget(username);
-        return ResponseEntity.ok(budgets);
+       try{
+           String username = principal.getName();
+           Map<String,Object> budgets = budgetService.fetchBudget(username);
+           return ResponseEntity.ok(budgets);
+       }
+       catch (Exception e){
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
     }
 
 }

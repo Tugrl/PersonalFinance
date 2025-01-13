@@ -20,24 +20,34 @@ public class ExpenseController {
 
     @PostMapping
     public ResponseEntity<ExpenseDTO> addExpense(@RequestBody ExpenseDTO expenseDTO, Principal principal) {
-        String username = principal.getName();
-        ExpenseDTO savedExpense= expenseService.addExpense(expenseDTO, username);
-        return ResponseEntity.ok(savedExpense);
+        try{
+            String username = principal.getName();
+            ExpenseDTO savedExpense= expenseService.addExpense(expenseDTO, username);
+            return ResponseEntity.ok(savedExpense);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(403).body(null);
+        }
     }
-//    @GetMapping
-//    public ResponseEntity<List<ExpenseDTO>> getAllExpenses(Principal principal) {
-//        String username = principal.getName();
-//        List<ExpenseDTO> expenses = expenseService.getAllExpenses(username);
-//        return ResponseEntity.ok(expenses);
-//    }
+
 @GetMapping
 public ResponseEntity<List<Map<String, Object>>> getAllExpenses(Principal principal) {
-    String username = principal.getName();
-    List<Map<String, Object>> expenses = expenseService.getExpenseSummaries(username);
-    return ResponseEntity.ok(expenses);
+    try{
+        String username = principal.getName();
+        List<Map<String, Object>> expenses = expenseService.getExpenseSummaries(username);
+        return ResponseEntity.ok(expenses);
+    }
+    catch(Exception e){
+        return ResponseEntity.status(403).body(null);
+    }
 }
     @GetMapping("/{expenseId}")
     public ResponseEntity<Optional<ExpenseDTO>> getExpenseById(@PathVariable("expenseId") UUID expenseId) {
-        return ResponseEntity.ok(expenseService.getExpenseById(expenseId));
+        try{
+            return ResponseEntity.ok(expenseService.getExpenseById(expenseId));
+        }
+        catch(Exception e){
+            return ResponseEntity.status(403).body(null);
+        }
     }
 }

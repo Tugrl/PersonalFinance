@@ -71,7 +71,7 @@ public class SuggestionService {
         List<Map<String, Object>> suggestions = new ArrayList<>();
         nonMandatoryExpensesByCategory.forEach((category, amount) -> {
             if (amount.compareTo(threshold) > 0) {
-                BigDecimal potentialSavings = amount.subtract(threshold).multiply(BigDecimal.valueOf(0.2));
+                BigDecimal potentialSavings = amount.multiply(BigDecimal.valueOf(0.2));
                 BigDecimal recommendingSaving = amount.subtract(potentialSavings);
                 Map<String, Object> suggestion = Map.of(
                         "category", category,
@@ -82,6 +82,7 @@ public class SuggestionService {
                 suggestions.add(suggestion);
             }
         });
+
 
         List<String> expenseDescriptions = expenses.stream()
                 .filter(expense -> !expense.isMandatory())
@@ -94,17 +95,17 @@ public class SuggestionService {
 
         if (possibleSavings.compareTo(totalMonthlySavingsRequired) < 0) {
             suggestions.add(Map.of(
-                    "message", "Hedeflerinize ulaşmak için harcamalarınızı azaltmanız gerekiyor.",
+
                     "requiredSavings", totalMonthlySavingsRequired,
-                    "currentSavingsPotential", possibleSavings,
-                    "expenseDescription", expenseDescriptions
+                    "currentSavingsPotential", possibleSavings
+                    //"expenseDescription", expenseDescriptions
             ));
-        } else {
-            suggestions.add(Map.of(
-                    "message", "Hedeflerinize ulaşmak için yeterli bütçeniz mevcut. Daha fazla tasarruf yapmayı düşünebilirsiniz!",
-                    "expenseDescription", expenseDescriptions
-            ));
-        }
+        } //else {
+//            suggestions.add(Map.of(
+//
+//                    "expenseDescription", expenseDescriptions
+//            ));
+//        }
 
         return Map.of(
                 "totalIncome", totalIncome,

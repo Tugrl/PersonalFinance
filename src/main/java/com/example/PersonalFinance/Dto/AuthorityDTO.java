@@ -6,7 +6,6 @@ public class AuthorityDTO {
     private UUID id;
     private String name;
 
-    // Getters and Setters
     public UUID getId() {
         return id;
     }

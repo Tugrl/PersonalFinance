@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -36,6 +37,9 @@ public class RoleLogic {
                 .orElseThrow(() -> new NoSuchElementException("Authority not found"));
         role.getAuthorities().remove(authority);
         return roleRepository.save(role);
+    }
+    public Optional<Role> getRoleByName(String roleName) {
+        return roleRepository.findByName(roleName);
     }
 
     public Role save(Role role) {

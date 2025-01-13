@@ -40,7 +40,7 @@ public class ExpenseService {
         Expense savedExpense = expenseLogic.addExpense(expense);
         return expenseMapper.toDto(savedExpense);
     }
-   // @PreAuthorize("hasAnyAuthority('READ_PRIVILEGE')")
+    //@PreAuthorize("hasAnyAuthority('READ_PRIVILEGE')")
     public List<ExpenseDTO> getAllExpenses(String username) {
         User user = (User) userService.loadUserByUsername(username);
         UserDTO userDTO = userService.findByUsername(username);

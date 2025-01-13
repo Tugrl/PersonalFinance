@@ -3,10 +3,7 @@ package com.example.PersonalFinance.Controller;
 import com.example.PersonalFinance.Dto.PasswordDTO;
 import com.example.PersonalFinance.Dto.UserDTO;
 import com.example.PersonalFinance.Service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +35,21 @@ public class UserController {
         UserDTO createdUser = userService.saveUser(userDTO);
         return ResponseEntity.status(201).body(createdUser);
     }
+    @PostMapping("/admin")
+    public ResponseEntity<UserDTO> createAdminUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.saveAdminUser(userDTO);
+        return ResponseEntity.status(201).body(createdUser);
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
+        if(userService.findById(id).isPresent()) {
+            userService.deleteUser(id);
+            return ResponseEntity.ok("Kullanıcı Başarıyla Silindi");
+        }
+       else{
+           return ResponseEntity.notFound().build();
+       }
+
     }
     @PostMapping("/{id}/roles")
     public ResponseEntity<UserDTO> addRoleToUser(@PathVariable UUID id, @RequestBody Map<String, String> request) {
@@ -59,7 +67,7 @@ public class UserController {
         if (userService.updatePassword(passwordDTO.getOldPassword(), passwordDTO.getNewPassword())) {
             return ResponseEntity.ok("Password updated successfully");
         } else {
-            return ResponseEntity.status(400).body("Failed to update password. Old password might be incorrect.");
+            return ResponseEntity.badRequest().body("Failed to update password. Old password might be incorrect.");
         }
     }
 }

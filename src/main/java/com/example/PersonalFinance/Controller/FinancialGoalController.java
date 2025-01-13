@@ -17,15 +17,25 @@ public class FinancialGoalController {
 
     @PostMapping
     public ResponseEntity<FinancialGoalDTO> createFinancialGoal(@RequestBody FinancialGoalDTO financialGoalDTO, Principal principal) {
-        String username = principal.getName();
-        FinancialGoalDTO createdGoal = financialGoalService.createFinancialGoal(financialGoalDTO, username);
-        return ResponseEntity.ok(createdGoal);
+        try{
+            String username = principal.getName();
+            FinancialGoalDTO createdGoal = financialGoalService.createFinancialGoal(financialGoalDTO, username);
+            return ResponseEntity.ok(createdGoal);
+        }
+        catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<FinancialGoalDTO>> getFinancialGoals(Principal principal) {
-        String username = principal.getName();
-        List<FinancialGoalDTO> goals = financialGoalService.getFinancialGoals(username);
-        return ResponseEntity.ok(goals);
+        try{
+            String username = principal.getName();
+            List<FinancialGoalDTO> goals = financialGoalService.getFinancialGoals(username);
+            return ResponseEntity.ok(goals);
+        }
+        catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
